@@ -12,3 +12,6 @@ goal is to create a merge conflict with the main branch and resolve it. This is 
 
 ### feature 2 (main)
 this is feature 2 added through the main branch. this should conflict with feature-test2 branch. 
+
+#### Feature 3 (branch 2 to main)
+this commit is done through cherry-pick onto the main branch from branch feature-test2
