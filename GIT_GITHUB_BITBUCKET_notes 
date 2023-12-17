@@ -1,0 +1,467 @@
+---------------------------------------
+-- GIT | GITHUB | BITBUCKET -- NOTES -- 
+------------------------------------------------------------------------------
+
+[GIT WORKS THE SAME FOR ANY SOURCE, github, bitbucket, etc]
+
+-- GIT -- BASICS -- 
+---------------------------------------
+
+-- VERSION CONTROL -- 
+- git is a free and open source version control system 
+- terminology:
+	- directory -> folder 
+	- terminal or command line -> interfacve for text commands 
+	- CLI -> command line interface 
+	- cd -> change directory 
+	- code editor -> word processor for writing code 
+	- respository -> project, or the folder/place where your project is kept 
+	- github -> git is the tool that tracks changes overtime; github is a website to hold all repositories 
+- git commands: [all lowercase]
+	- clone -> bring a repository that is hosted somewhere [github or bitbucket] into a folder in your local machine 
+	- add -> track your files and changes in git 
+	- commit -> save the changes made to files 
+	- push -> upload git commands to a remote repo 
+	- pull -> download changes from remote repo to your local machine; opposite of push 
+
+-- Repo in github:
+// check git version 
+(base) ada4sh@Adarshs-MacBook-Pro ~ % git --version
+git version 2.39.3 (Apple Git-145)
+
+// make sure you have ssh keys added for ssh cloning or else use https github link 
+(base) ada4sh@Adarshs-MacBook-Pro .ssh_keys % ssh-keygen -t rsa   
+<keygen related stuff> 
+// add the content in id_rsa.pub file to github keys 
+// open the .ssh/config file and add the new key there 
+(base) ada4sh@Adarshs-MacBook-Pro Study % vi ~/.ssh/config
+//add this entry to the config file 
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile <filepath>/.ssh_keys/id_rsa.pub
+// add the key
+(base) ada4sh@Adarshs-MacBook-Pro .ssh % ssh-add <filepath>/.ssh_keys/id_rsa
+// YOU ARE NOW SET TO START CLONING AND WORKING WITH YOUR REPOS
+
+// cloing repo:
+(base) ada4sh@Adarshs-MacBook-Pro git_practice % git clone https://github.com/ada4sh/Oracle_scripts.git
+Cloning into 'Oracle_scripts'...
+remote: Enumerating objects: 9, done.
+remote: Counting objects: 100% (9/9), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 9 (delta 2), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (9/9), 119.78 KiB | 1.13 MiB/s, done.
+Resolving deltas: 100% (2/2), done.
+
+- hidden .git/ directory records all the changes made in the history of this repo which includes the ones made on github.com 
+- when a new file is created or added, git shows it as an 'untracked file' and if modified, then 'modified file'. 
+- for an untracked file, you need to tell git to track the file and once tracked, they are ready to be commited. 
+
+// created a new file in the repo [local machine]
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % vi readme.md 
+
+// get status of the changes 
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	readme.md
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+// tell git to track all files [new files and modified] with '.' or specific files my mentioning the name 'git add <filename>' 
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git add .
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   readme.md
+
+- you need a message [mandatory] when you are committing a change; you can have multiple messages with more -m addons 
+
+// committing new file 
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git commit -m "added readme.md file to the repo" 
+[main 42d2efb] added readme.md file to the repo
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.md
+ 
+- as this stage, the change is made only locally; to add changes it to the remote repo, you need to 'git push'. 
+
+// pushing new or modified [commited] files to github.com with 'git push'
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git push 
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 345 bytes | 345.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To github.com:ada4sh/Oracle_scripts.git
+   c9bac60..731d23d  main -> main
+
+- note that 'git push' will push to the master branch and is a shortcut for 'git push origin master'.
+- you can add new folders from local to the github repo and set that as master branch using 'git push -u origin master'.
+
+// initializing a new repo [that is not on gihub, but local] and then push it to github
+(base) ada4sh@Adarshs-MacBook-Pro git_practice % mkdir demo_repo2 
+(base) ada4sh@Adarshs-MacBook-Pro git_practice % cd demo_repo2 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % vi readme.md
+(base) ada4sh@Adarshs-MacBook-Pro git_practice % cd demo_repo2 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % ls -l
+total 8
+-rw-r--r--  1 ada4sh  staff  113 Dec 13 13:22 readme.md
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git init
+Initialized empty Git repository in /Users/ada4sh/Documents/Study/git_practice/demo_repo2/.git/
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git status
+On branch ada4sh
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	readme.md
+
+nothing added to commit but untracked files present (use "git add" to track)
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 %         
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git add readme.md
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git commit -m "created a new readme" -m "testing the second heading comment"
+[ada4sh (root-commit) d2043eb] created a new readme
+ 1 file changed, 5 insertions(+)
+ create mode 100644 readme.md
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git status
+On branch ada4sh
+nothing to commit, working tree clean
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git push origin master
+error: src refspec master does not match any
+error: failed to push some refs to 'origin'
+
+- at this stage, this new repo is initialized but not added to github.com, hence cannot push 
+- easy way to move forward is to create a new empty repo with this name on github and establish the connection
+- remember to create a branch after adding remote connection to new githib repo
+
+// adding reference to remote repo on github by initializing repo and creating a new branch 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git remote add origin git@github.com:ada4sh/demo_repo2.git
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git remote -v 
+origin	git@github.com:ada4sh/demo_repo2.git (fetch)
+origin	git@github.com:ada4sh/demo_repo2.git (push)
+- 'git remote -v' is to verify and list any remote repos that are connected to this repo 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch -M main
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git push -u origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 327 bytes | 327.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:ada4sh/demo_repo2.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+
+- GENERAL WORKFLOW: 
+	- LOCAL GIT: WRITE CODE >> STAGE CHANGES [git add] >> COMMIT CHANGES [git commit] >> PUSH CHANGES [git push] >> make a pull request 
+	- github: write code >> commit changes >> make a pull request 
+
+// BRANCHING:
+- master is default branch in the repo 
+- if another branch is created, commits to that branch are not refelcted, or cannot be seen from the master branch. 
+- each branch has no way of knowing what changes are made to the other branches.
+- this is useful when you want to test on your own sandbox, and then finally merge to the master branch 
+
+// command to check current or list of branche in the repo; * means current branch 
+(base) ada4sh@Adarshs-MacBook-Pro Oracle_scripts % git branch
+* main
+
+// switch or create new branches 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git checkout -b feature-test1
+Switched to a new branch 'feature-test1'
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch
+* feature-test1
+  main
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch
+  feature-test1
+* main
+
+// undo changes made in a branch before commit 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   readme.md
+
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git restore --staged readme.md
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git status                    
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % vi readme.md                  
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git restore readme.md 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % vi readme.md   
+
+// undo changes after commit using 'reset' and 'log' 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git commit -am "accidental commit"
+[feature-test2 732ff3a] accidental commit
+ 1 file changed, 1 insertion(+)
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git log
+commit 732ff3a6af230c4e6f65c655f6eee5744536f24e (HEAD -> feature-test2)
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Thu Dec 14 20:15:18 2023 -0500
+
+    accidental commit
+
+commit 127455a811c07eaf325e5156c154951e2512c4e5 (origin/feature-test2)
+Merge: 30439a1 f820a05
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Thu Dec 14 19:54:25 2023 -0500
+
+    resolved merge conflict in readme
+
+commit f820a057640db0edfbee4f3faa45cec3151d9cc4
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Thu Dec 14 19:48:40 2023 -0500
+
+    added feature 2 through main branch to readme
+
+commit 30439a12d069cc7433023a6bcde28e2656ee8207
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Thu Dec 14 19:45:26 2023 -0500
+
+    added feature 2 using feature-test2 branch to readme
+
+commit 083691582bad738b5ab09a73dc8889dfcf3fe527
+Merge: d2043eb 009f788
+Author: Adarsh <71088878+ada4sh@users.noreply.github.com>
+Date:   Thu Dec 14 19:29:54 2023 -0500
+
+    Merge pull request #1 from ada4sh/feature-test1
+    
+    added feature 1 using feature branch 1 to readme
+
+commit 009f78896667f38bad043fc0a83abf04caca97a0 (origin/feature-test1)
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Thu Dec 14 19:23:01 2023 -0500
+
+    added feature 1 using feature branch 1 to readme
+
+commit d2043ebbd5d1cefba0e79ef2581ccefbd178cd83
+Author: ada4sh <adarsh.reddy.perapola@gmail.com>
+Date:   Wed Dec 13 13:26:13 2023 -0500
+
+    created a new readme
+    
+    testing the second heading comment
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git reset HEAD~1
+Unstaged changes after reset:
+M	readme.md
+^
+[OR]
+v
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git reset 127455a811c07eaf325e5156c154951e2512c4e5
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git reset --hard 127455a811c07eaf325e5156c154951e2512c4e5
+HEAD is now at 127455a resolved merge conflict in readme
+
+
+// merging changes made on feature branch to main branch 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch 
+* feature-test1
+  main
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git commit -m "added feature 1 using feature branch 1 to readme"
+[feature-test1 009f788] added feature 1 using feature branch 1 to readme
+ 1 file changed, 3 insertions(+)
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git push -u origin feature-test1
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 384 bytes | 384.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To github.com:ada4sh/demo_repo2.git
+   d2043eb..009f788  feature-test1 -> feature-test1
+branch 'feature-test1' set up to track 'origin/feature-test1'.
+
+- on github, confirm and create a pull request, then merge on github to apply changes to the main branch 
+- now the changes will be reflected on the main branch also 
+
+// bring changes to local repo from github after merging 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git pull origin main
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (1/1), 646 bytes | 646.00 KiB/s, done.
+From github.com:ada4sh/demo_repo2
+ * branch            main       -> FETCH_HEAD
+   d2043eb..0836915  main       -> origin/main
+Updating d2043eb..0836915
+Fast-forward
+ readme.md | 3 +++
+ 1 file changed, 3 insertions(+)
+
+// delete feature branch after working on it
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch -d feature-test1
+Deleted branch feature-test1 (was 009f788).
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch
+* main
+
+// merge conflicts 
+- NOTE: for modified files only, you can add and commit in the same command woth 'git commit -am "<message>"'
+- this is same as merging, when a merge conflix occurs, delete the code that git adds related to the conflict in a text editor, and then push, PR, merge like above 
+
+// forking 
+- this is done when you want to take code from a repo from anotehr user or account or owner, and make any changes to it for your personal use, you fork it to bring it to your account, and then use then code
+- to add your code changes to the master branch, i.e. the owners repo, then create a PR and then merge to the repo and branch of your choice. 
+- simply put, forking is same as cloning except to your account. 
+- good practice is to delete new branches created as you dont intend to use then again 
+
+//cherry-pick 
+- picking and choosing commits from other commits from the main branch and adding to the main branch commits 
+- this is done by taking the commit hashes from oher branches and commiting in the main or desired branch 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git log feature-test3 --oneline
+96ad6b8 (feature-test3) junk text in this commit, omit from main
+52eee06 deleted the junk text =====
+8b4717f (HEAD -> main, origin/main) Merge pull request #2 from ada4sh/feature-test2
+127455a (origin/feature-test2) resolved merge conflict in readme
+f820a05 added feature 2 through main branch to readme
+30439a1 added feature 2 using feature-test2 branch to readme
+0836915 Merge pull request #1 from ada4sh/feature-test1
+009f788 (origin/feature-test1) added feature 1 using feature branch 1 to readme
+d2043eb created a new readme
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git log feature-test2 --oneline
+2275bd9 (feature-test2) feature 3 from branch 2. use cherry pick from main
+127455a (origin/feature-test2) resolved merge conflict in readme
+f820a05 added feature 2 through main branch to readme
+30439a1 added feature 2 using feature-test2 branch to readme
+0836915 Merge pull request #1 from ada4sh/feature-test1
+009f788 (origin/feature-test1) added feature 1 using feature branch 1 to readme
+d2043eb created a new readme
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git branch
+  feature-test2
+  feature-test3
+* main
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git cherry-pick 52eee06 2275bd9
+[main 8d3ac58] deleted the junk text =====
+ Date: Sat Dec 16 18:35:15 2023 -0500
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+Auto-merging readme.md
+[main 0463fe2] feature 3 from branch 2. use cherry pick from main
+ Date: Sat Dec 16 18:42:08 2023 -0500
+ 1 file changed, 3 insertions(+)
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git status
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git log main --oneline
+0463fe2 (HEAD -> main) feature 3 from branch 2. use cherry pick from main
+8d3ac58 deleted the junk text =====
+8b4717f (origin/main) Merge pull request #2 from ada4sh/feature-test2
+127455a (origin/feature-test2) resolved merge conflict in readme
+f820a05 added feature 2 through main branch to readme
+30439a1 added feature 2 using feature-test2 branch to readme
+0836915 Merge pull request #1 from ada4sh/feature-test1
+009f788 (origin/feature-test1) added feature 1 using feature branch 1 to readme
+d2043eb created a new readme
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % git push origin main
+Enumerating objects: 8, done.
+Counting objects: 100% (8/8), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 651 bytes | 651.00 KiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+To github.com:ada4sh/demo_repo2.git
+   8b4717f..0463fe2  main -> main
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % 
+(base) ada4sh@Adarshs-MacBook-Pro demo_repo2 % cat readme.md 
+# New repo ReadMe file 
+this is a test file to initilize a new repo
+
+## subheading test
+this repo is expendable 
+
+## Feature 1 
+this is feature 1 added through feature branch 1
+
+### Feature 2
+goal is to create a merge conflict with the main branch and resolve it. This is being added through feature-test2 branch. 
+
+### feature 2 (main)
+this is feature 2 added through the main branch. this should conflict with feature-test2 branch. 
+
+#### Feature 3 (branch 2 to main)
+this commit is done through cherry-pick onto the main branch from branch feature-test2
+
+- to abort : git cherry-pick abort 
+
+// git merge vs rebase 
+- from main branch, 'git merge feature-test2' merges the commits in branch 2 to main , keeping the main branch updated. if visualized, you see branches with intersections to main. 
+- git rebase main (from branch2): this would take the commits on branch 2 in a seperate section, and sequenctially add those commits to main branch and keeps the main branch updated. This means, the commits are now new to main, and the old commits on branch 2 are deleted. this means, you will not have a commit history, which is a disadvantage if you are trying to trace back on commits and their logs. 
+- NOTE: do not use Rebase on commits that you pushed/shared on a remote repo; instead if you want to use it, use it to clean up your local commit history before merging it into a shared team branch 
+
+- git stash : allows you to store a copy of your work without committing anything. 
+	- git stash list: shows items on the stash 
+	- git stash apply: applys the last element in the stash list 
+	- git stash clear: clears the list in the stash 
+	- git stash apply 1: applys the element 1 in the stash list 
+- git ignore file consists of a lists of things git will ignore 
+
+---------------------------------------
+-- GIT FOR PROFESSIONALS --
+---------------------------
+
+-- THE PERFECT COMMIT-- 
+
+- say there are three files, commit on all three is not good practice.
+- have commits for each file or each change.
+- bigger a commit gets and more the topics makes it hard to understand to later review 
+- git staging area allows you to select specific files or parts of a file that you want to commit
+- good practice is to only commit files that are of the same topic in a single commit 
+- good practice to combines commits from the same topic
+
+// partial commit after making multiple changes to the same file: 
+$ git add -p <filename> 
+- say 'y' or 'n' for chuncks that you wish to include in your commit, the others will be omitted; you will see the same file in both the staged (green) and unstaged (red) ares when you check git status 
+
+- a good commit will have a good commit message. 
+	- keep it brief 
+	- subject and body 
+	- what is different, reason, anything to watch out 
+	- if using an editor, first line is subject, give a blank line after to specify the body, and then add body of commit message in the third line 
+
+ 
